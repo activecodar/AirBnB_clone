@@ -13,10 +13,18 @@ class BaseModel:
     """BaseModel class defines all common attributes and methods
     that will inherit from it
     """
-    def __init__(self):
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.datetime.now()
-        self.updated_at = datetime.datetime.now()
+    def __init__(self, *args, **kwargs):
+        if bool(kwargs):
+            for k, v in kwargs.items():
+                if k == "__class__":
+                    continue
+                if k in ['created_at', 'updated_at']:
+                    v = datetime.datetime.fromisoformat(v)
+                setattr(self, k, v)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.datetime.now()
+            self.updated_at = datetime.datetime.now()
 
     def __str__(self):
         return "[{}] ({}) {}"\
