@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 import cmd
 
-from models.base_model import BaseModel
-from models.utils import get_classes, get_formatted_records
+from models.utils import (get_classes, get_formatted_records,
+                          classes_to_str_list)
 
 """
 Console entrypoint module for teh AirBnB console application.
@@ -57,14 +57,17 @@ class HBNBCommand(cmd.Cmd):
         Args:
             model (str): The class name from which to create an instance.
         """
+        model_classes = get_classes()
+        model_classes_lst = classes_to_str_list(model_classes)
         if model == "":
             print("** class name missing **")
-        elif model != "BaseModel":
+        elif model not in model_classes_lst:
             print("** class doesn't exist **")
         else:
-            instance = BaseModel()
-            instance.save()
-            print(instance.id)
+            model_instance = [i.get(model) for i in model_classes
+                              if i.get(model) is not None][0]()
+            model_instance.save()
+            print(model_instance.id)
 
     def do_show(self, show_args):
         """
@@ -76,6 +79,7 @@ class HBNBCommand(cmd.Cmd):
             show_args (str): The class name from which to create an instance.
         """
         model_classes = get_classes()
+        model_classes_lst = classes_to_str_list(model_classes)
         if show_args == "":
             print("** class name missing **")
             return
@@ -83,17 +87,15 @@ class HBNBCommand(cmd.Cmd):
             split_details = show_args.split()
             model = split_details[0]
             model_id = split_details[1] if len(split_details) > 1 else ""
-            if model != "" and model not in [i.keys() for i in
-                                             model_classes][0]:
+            if model != "" and model not in model_classes_lst:
                 print("** class doesn't exist **")
                 return
-            elif model_id == "" and model in [i.keys() for i in
-                                              model_classes][0]:
+            elif model_id == "" and model in model_classes_lst:
                 print("** instance id missing **")
                 return
-            elif model in [i.keys() for i in
-                           model_classes][0] and model_id != "":
-                model_instance = [i.get(model) for i in model_classes][0]()
+            elif model in model_classes_lst and model_id != "":
+                model_instance = [i.get(model) for i in model_classes
+                                  if i.get(model) is not None][0]()
                 response = model_instance.get_single_record(model_id)
                 print(model_instance.__str__()) if response else None
                 return
@@ -108,6 +110,7 @@ class HBNBCommand(cmd.Cmd):
             show_args (str): The class name from which to create an instance.
         """
         model_classes = get_classes()
+        model_classes_lst = classes_to_str_list(model_classes)
         if delete_args == "":
             print("** class name missing **")
             return
@@ -115,36 +118,33 @@ class HBNBCommand(cmd.Cmd):
             split_details = delete_args.split()
             model = split_details[0]
             model_id = split_details[1] if len(split_details) > 1 else ""
-            if model != "" and model not in [i.keys()
-                                             for i in model_classes][0]:
+            if model != "" and model not in model_classes_lst:
                 print("** class doesn't exist **")
                 return
-            elif model_id == "" and model in [i.keys()
-                                              for i in model_classes][0]:
+            elif model_id == "" and model in model_classes_lst:
                 print("** instance id missing **")
                 return
-            elif model in [i.keys()
-                           for i in model_classes][0] and model_id != "":
-                model_instance = [i.get(model) for i in model_classes][0]()
+            elif model in model_classes_lst and model_id != "":
+                model_instance = [i.get(model) for i in model_classes
+                                  if i.get(model) is not None][0]()
                 response = model_instance.delete_record(model_id)
                 print(model_instance.__str__()) if response else None
                 return
 
     def do_all(self, model_name):
-        if model_name != "" and model_name not in [i.keys()
-                                                   for i in get_classes()][0]:
+        model_classes = get_classes()
+        model_classes_lst = classes_to_str_list(model_classes)
+        if model_name != "" and model_name not in model_classes_lst:
             print("** class doesn't exist **")
             return
         elif model_name == "":
             final_list = []
-            model_classes = get_classes()
             for klass in model_classes:
                 klass_name = [i for i in klass.keys()][0]
                 final_list.extend(get_formatted_records(model_classes,
                                                         klass_name))
             print(final_list)
         else:
-            model_classes = get_classes()
             results = get_formatted_records(model_classes, model_name)
             print(results)
             return
@@ -157,13 +157,15 @@ class HBNBCommand(cmd.Cmd):
         Usage: update <class name> <id> <attribute name> "<attribute value>"
         Ex: $ update BaseModel 1234-1234-1234 email "aibnb@mail.com"
         """
+        model_classes = get_classes()
+        model_classes_lst = classes_to_str_list(model_classes)
         if update_args == "":
             print("** class name missing **")
             return
         else:
             update_args = update_args.split()
             model_name = update_args[0]
-            if model_name not in [i.keys() for i in get_classes()][0]:
+            if model_name not in model_classes_lst:
                 print("** class doesn't exist **")
                 return
             elif len(update_args) == 1:
@@ -182,7 +184,8 @@ class HBNBCommand(cmd.Cmd):
                     attribute_name = update_args[2]
                     attribute_value = update_args[3]
                     model_inst = [i.get(model_name)
-                                  for i in get_classes()][0]()
+                                  for i in model_classes
+                                  if i.get(model_name) is not None][0]()
                     record = model_inst.get_single_record(record_id)
                     if record is None:
                         return
