@@ -56,6 +56,14 @@ class BaseModel:
 
     @staticmethod
     def get_single_record(inst_id):
+        """
+        Return a record that matches the specified instance ID.
+        Args:
+            inst_id (str): The instance ID to search for.
+        Returns:
+            object: The instance with the specified ID, or `None` if no such
+                instance was found.
+        """
         record_found = None
         all_records = models.storage.all()
         for record in all_records.values():
@@ -71,6 +79,13 @@ class BaseModel:
 
     @staticmethod
     def delete_record(inst_id):
+        """
+        Deletes a record that matches the specified instance ID.
+        Args:
+           inst_id (str): The instance ID to search for.
+        Returns:
+           None
+        """
         with open("file.json", "r") as file:
             data = json.load(file)
             if inst_id not in [j['id'] for i, j in data.items()]:
@@ -83,10 +98,27 @@ class BaseModel:
 
     @staticmethod
     def get_all_records():
+        """
+        Return all records.
+
+        Returns:
+            dict: A dictionary of all records.
+        """
         return models.storage.all()
 
     @staticmethod
     def update_record(**kwargs):
+        """
+        Update a record.
+
+        Kwargs:
+            record (object): The record to update.
+            attr_name (str): The name of the attribute to update.
+            attr_value (str): The new value of the attribute.
+
+        Returns:
+            None
+        """
         record = kwargs.get('record')
         attr_name = kwargs.get('attr_name')
         attr_value = kwargs.get('attr_value')

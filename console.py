@@ -132,6 +132,15 @@ class HBNBCommand(cmd.Cmd):
                 return
 
     def do_all(self, model_name):
+        """
+        Prints all string representation of all instances based or not on
+        the class name.
+
+        Ex: $ all BaseModel or $ all.
+
+        If the class name doesn’t exist,
+        print ** class doesn't exist ** (ex: $ all MyModel)
+        """
         model_classes = get_classes()
         model_classes_lst = classes_to_str_list(model_classes)
         if model_name != "" and model_name not in model_classes_lst:
