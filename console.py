@@ -1,12 +1,11 @@
 #!/usr/bin/python3
+"""
+Console entrypoint module for teh AirBnB console application.
+"""
 import cmd
 
 from models.utils import (get_classes, get_formatted_records,
                           classes_to_str_list)
-
-"""
-Console entrypoint module for teh AirBnB console application.
-"""
 
 
 class HBNBCommand(cmd.Cmd):
@@ -97,7 +96,7 @@ class HBNBCommand(cmd.Cmd):
                 model_instance = [i.get(model) for i in model_classes
                                   if i.get(model) is not None][0]()
                 response = model_instance.get_single_record(model_id)
-                print(model_instance.__str__()) if response else None
+                print(response.__str__()) if response else None
                 return
 
     def do_destroy(self, delete_args):
@@ -127,8 +126,7 @@ class HBNBCommand(cmd.Cmd):
             elif model in model_classes_lst and model_id != "":
                 model_instance = [i.get(model) for i in model_classes
                                   if i.get(model) is not None][0]()
-                response = model_instance.delete_record(model_id)
-                print(model_instance.__str__()) if response else None
+                model_instance.delete_record(model_id)
                 return
 
     def do_all(self, model_name):
@@ -198,7 +196,7 @@ class HBNBCommand(cmd.Cmd):
                     record = model_inst.get_single_record(record_id)
                     if record is None:
                         return
-                    model_inst.update_record(record=record,
+                    model_inst.update_record(record_id=record_id,
                                              attr_name=attribute_name,
                                              attr_value=attribute_value)
                     return

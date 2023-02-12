@@ -1,4 +1,10 @@
 #!/usr/bin/python3
+"""file_storage module defines a class FileStorage that
+serializes instances to a JSON file and deserializes
+JSON file to instances with Private class attributes
+file_path and objects and Public instance methods
+all, new, save, reload.
+"""
 import json
 import os
 from models.base_model import BaseModel
@@ -8,12 +14,6 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-"""file_storage module defines a class FileStorage that
-serializes instances to a JSON file and deserializes
-JSON file to instances with Private class attributes
-file_path and objects and Public instance methods
-all, new, save, reload.
-"""
 
 
 class FileStorage:

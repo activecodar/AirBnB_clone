@@ -2,6 +2,7 @@ import importlib
 import inspect
 import os
 
+from models import storage
 from models.base_model import BaseModel
 
 
@@ -29,8 +30,6 @@ def classes_to_str_list(model_classes):
 
 
 def get_formatted_records(model_classes, model_name):
-    model_instance = [i.get(model_name) for i in model_classes
-                      if i.get(model_name) is not None][0]()
-    results = [i.__str__() for i in model_instance.get_all_records().values()
-               if i.__class__ == model_instance.__class__]
+    records = storage.all()
+    results = [i.__str__() for i in records.values() if i.__class__.__name__ == model_name]
     return results

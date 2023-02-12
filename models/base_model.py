@@ -1,15 +1,13 @@
 #!/usr/bin/python3
-import uuid
-import datetime
-import models
-import json
-
 """
-
 base_model module defines a class BaseModel with attributes
 id, created_at, updated_at and public instance methods
 save and to_dict
 """
+import uuid
+import datetime
+import models
+import json
 
 
 class BaseModel:
@@ -95,6 +93,7 @@ class BaseModel:
                 data = {i: j for i, j in data.items() if j['id'] != inst_id}
         with open("file.json", "w") as file:
             json.dump(data, file, indent=4)
+        models.storage.reload()
 
     @staticmethod
     def get_all_records():
@@ -112,15 +111,27 @@ class BaseModel:
         Update a record.
 
         Kwargs:
-            record (object): The record to update.
+            record_id (str): The record to update.
             attr_name (str): The name of the attribute to update.
             attr_value (str): The new value of the attribute.
 
         Returns:
             None
         """
-        record = kwargs.get('record')
-        attr_name = kwargs.get('attr_name')
-        attr_value = kwargs.get('attr_value')
-        setattr(record, attr_name, attr_value.replace('"', ''))
-        models.storage.save()
+        with open('file.json', 'r') as json_file:
+            data = json.load(json_file)
+
+        record_id = kwargs.get("record_id")
+        attr_name = kwargs.get("attr_name")
+        attr_value = kwargs.get("attr_value")
+
+        for key in data.keys():
+            if record_id in key:
+                data[key][attr_name] = attr_value.replace('"', "")
+                break
+        else:
+            raise ValueError(f"No record found with id {record_id}")
+
+        with open('file.json', 'w') as json_file:
+            json.dump(data, json_file)
+        models.storage.reload()
