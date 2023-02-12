@@ -2,6 +2,12 @@
 import json
 import os
 from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 """file_storage module defines a class FileStorage that
 serializes instances to a JSON file and deserializes
 JSON file to instances with Private class attributes
@@ -38,7 +44,6 @@ class FileStorage:
         """deserializes the JSON file to __objects
         (only if the JSON file (__file_path) exists
         """
-        my_dict = {}
         if os.path.exists(FileStorage.__filepath):
             with open(FileStorage.__filepath, "r") as f:
                 my_dict = json.loads(f.read())
