@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import unittest
-import models
 from models.city import City
 from models.base_model import BaseModel
 

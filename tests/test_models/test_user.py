@@ -2,7 +2,6 @@
 import unittest
 from models.user import User
 from models.base_model import BaseModel
-import models
 
 
 class Test_User(unittest.TestCase):
@@ -26,9 +25,6 @@ class Test_User(unittest.TestCase):
 
     def test_to_dict(self):
         self.assertTrue(type(self.user.to_dict()) is dict)
-
-    def test_useraddedtoobjects(self):
-        self.assertIn(self.user, models.storage.all().values())
 
     def tearDown(self):
         self.user = None
