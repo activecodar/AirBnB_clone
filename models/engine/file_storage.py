@@ -20,7 +20,7 @@ class FileStorage:
     """defines a class used for serialization of instances to JSON
     and deserialization of JSON to instances
     """
-    __file_path = "file.json"
+    __filepath = "file.json"
     __objects = {}
 
     def all(self):
@@ -37,15 +37,15 @@ class FileStorage:
         my_dict = {}
         for k, v in FileStorage.__objects.items():
             my_dict[k] = v.to_dict()
-        with open(FileStorage.__file_path, "w") as f:
+        with open(FileStorage.__filepath, "w") as f:
             f.write(json.dumps(my_dict))
 
     def reload(self):
         """deserializes the JSON file to __objects
         (only if the JSON file (__file_path) exists
         """
-        if os.path.exists(FileStorage.__file_path):
-            with open(FileStorage.__file_path, "r") as f:
+        if os.path.exists(FileStorage.__filepath):
+            with open(FileStorage.__filepath, "r") as f:
                 my_dict = json.loads(f.read())
                 for v in my_dict.values():
                     class_name = v['__class__']
