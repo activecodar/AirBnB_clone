@@ -19,6 +19,9 @@ class Test_FileStorage(unittest.TestCase):
     def test_file_path(self):
         self.assertEqual(models.storage._FileStorage__file_path, "file.json")
 
+    def test_objects_dict(self):
+        self.assertTrue(type(models.storage._FileStorage__objects) is dict)
+
     def test_all(self):
         self.assertIn(self.b1, models.storage.all().values())
 
@@ -37,6 +40,11 @@ class Test_FileStorage(unittest.TestCase):
         self.assertEqual(models.storage._FileStorage__objects, {})
 
     def test_reload_withJsonFile(self):
+        models.storage._FileStorage__objects = {}
+        models.storage.reload()
+        self.assertIn(self.b1, models.storage.all().values())
+
+    def test_reload(self):
         models.storage._FileStorage__objects = {}
         models.storage.reload()
         self.assertIn(self.b1, models.storage.all().values())
