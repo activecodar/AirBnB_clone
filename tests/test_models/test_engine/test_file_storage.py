@@ -13,6 +13,7 @@ class Test_FileStorage(unittest.TestCase):
         self.b1 = BaseModel()
 
     def test_initialization(self):
+        self.assertTrue(type(models.storage) is FileStorage)
         self.assertEqual(models.storage._FileStorage__filepath, "file.json")
         self.assertTrue(type(models.storage.all()) is dict)
 
