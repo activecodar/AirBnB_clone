@@ -84,8 +84,8 @@ class Test_BaseModel(unittest.TestCase):
 
     def test__str__(self):
         b1 = BaseModel()
-        self.assertEqual(BaseModel.__str__(b1), "[{}] ({}) {}"\
-            .format(type(b1).__name__, b1.id, b1.__dict__))
+        self.assertEqual(BaseModel.__str__(b1), "[{}] ({}) {}"
+                         .format(type(b1).__name__, b1.id, b1.__dict__))
 
 
 if __name__ == "__main__":

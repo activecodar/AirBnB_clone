@@ -16,7 +16,7 @@ class Test_FileStorage(unittest.TestCase):
         self.assertTrue(type(models.storage) is FileStorage)
 
     def test_file_path(self):
-        self.assertEqual(models.storage._FileStorage__filepath, "file.json")
+        self.assertEqual(models.storage._FileStorage__file_path, "file.json")
 
     def test_objects_dict(self):
         self.assertTrue(type(models.storage._FileStorage__objects) is dict)
@@ -26,14 +26,14 @@ class Test_FileStorage(unittest.TestCase):
 
     def test_save(self):
         self.b1.save()
-        self.assertTrue(os.path.exists(models.storage._FileStorage__filepath))
-        with open(models.storage._FileStorage__filepath, "r") as f:
+        self.assertTrue(os.path.exists(models.storage._FileStorage__file_path))
+        with open(models.storage._FileStorage__file_path, "r") as f:
             my_dict = json.loads(f.read())
         self.assertIn(self.b1.to_dict(), my_dict.values())
 
     def test_reload_withoutJsonFile(self):
         models.storage.save()
-        os.remove(models.storage._FileStorage__filepath)
+        os.remove(models.storage._FileStorage__file_path)
         models.storage._FileStorage__objects = {}
         models.storage.reload()
         self.assertEqual(models.storage._FileStorage__objects, {})
@@ -53,13 +53,14 @@ class Test_FileStorage(unittest.TestCase):
         b2 = BaseModel()
         b1.save()
         b2.save()
-        with open(models.storage._FileStorage__filepath, "r") as f:
+        with open(models.storage._FileStorage__file_path, "r") as f:
             my_dict = json.loads(f.read())
         self.assertIn(b1.to_dict(), my_dict.values())
         self.assertIn(b2.to_dict(), my_dict.values())
 
     def tearDown(self):
         self.b1 = None
+
 
 if __name__ == "__main__":
     unittest.main()
