@@ -1,0 +1,36 @@
+.filters {
+    background-color: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    height: 70px;
+    width: 100%;
+  }
+  
+  .filters button {
+    background-color: #ff5a5f;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 18px;
+    height: 48px;
+    margin-top: 11px;
+    opacity: 1;
+    text-transform: titlecase;
+    transition: opacity 0.25s ease-in-out;
+    width: 20%;
+  }
+  .search-input {
+    height: 20px;
+    width: 70%;
+    margin: 15px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+  }
+  
+  .filters button:hover {
+    cursor: pointer;
+    opacity: 0.9;
+  }
+  
