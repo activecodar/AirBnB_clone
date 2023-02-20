@@ -2,8 +2,8 @@
 from models.base_model import BaseModel
 import unittest
 import datetime
-from time import sleep
 import models
+from time import sleep
 
 
 class Test_BaseModel(unittest.TestCase):
